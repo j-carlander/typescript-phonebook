@@ -5,28 +5,34 @@
 
 table {
   border-collapse: collapse;
+  margin: auto;
 }
 
 thead .contacts-table-row {
   border-bottom: 2px solid #aaa;
 }
+
+.contacts-table-body {
+  max-height: 15em;
+  overflow-y: scroll;
+  display: block;
+}
 .contacts-table-row {
   border-bottom: 1px solid #ddd;
+  display: table;
+}
+.contacts-table-row:nth-child(even) {
+  background-color: #ddd;
 }
 td,
 th {
   min-width: 20ch;
 }
 .add-contact-form {
-  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1em auto;
   padding-top: 1em;
   border-top: 1px solid #aaa;
-}
-
-.contact-field {
-  display: block;
-}
-
-.sorting-arrow {
-  width: 2ch;
 }

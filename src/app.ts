@@ -66,10 +66,12 @@ function getFormFieldValue(
       ref
     ) as HTMLInputElement;
     let value: number = Number(field.value);
+    field.value = "";
     return value;
   }
   let field: HTMLInputElement = document.querySelector(ref) as HTMLInputElement;
   let value: string = field.value;
+  field.value = "";
   return value;
 }
 
@@ -93,12 +95,11 @@ let sortedAsc: true | false = false;
 function sortContactsBy(attribute: "lName" | "fName" | "phone"): void {
   let sortedContacts: Contact[] = [...contacts];
   let domSelector: string = ".sort-" + attribute.toLowerCase() + "-btn";
-  console.log(domSelector);
+
   let sortBtn: HTMLButtonElement = document.querySelector(
     domSelector
   ) as HTMLButtonElement;
 
-  console.log("before ", "isSorted: ", isSorted, " asc: ", sortedAsc);
   if (!isSorted) {
     isSorted = !isSorted;
     if (!sortedAsc) {
@@ -106,7 +107,7 @@ function sortContactsBy(attribute: "lName" | "fName" | "phone"): void {
       sortedContacts.sort((a, b) =>
         a[attribute] > b[attribute] ? 1 : a[attribute] < b[attribute] ? -1 : 0
       );
-      console.log("1st time: ", "isSorted: ", isSorted, " asc: ", sortedAsc);
+
       appendToContactsTable(sortedContacts);
       sortBtn.innerHTML = "&#8593;";
       return;
@@ -118,14 +119,14 @@ function sortContactsBy(attribute: "lName" | "fName" | "phone"): void {
       sortedContacts.sort((a, b) =>
         a[attribute] > b[attribute] ? -1 : a[attribute] < b[attribute] ? 1 : 0
       );
-      console.log("2nd time: ", "isSorted: ", isSorted, " asc: ", sortedAsc);
+
       appendToContactsTable(sortedContacts);
       sortBtn.innerHTML = "&#8595;";
       return;
     }
     if (!sortedAsc) {
       isSorted = !isSorted;
-      console.log("3rd time: ", "isSorted: ", isSorted, " asc: ", sortedAsc);
+
       appendToContactsTable(contacts);
       sortBtn.innerHTML = "&#8645;";
       return;

@@ -45,10 +45,12 @@ function getFormFieldValue(ref) {
     if (ref === "#phone-field") {
         let field = document.querySelector(ref);
         let value = Number(field.value);
+        field.value = "";
         return value;
     }
     let field = document.querySelector(ref);
     let value = field.value;
+    field.value = "";
     return value;
 }
 // if the contacts list is not empty on first run, append the contacts to the Contacts list in DOM
@@ -69,15 +71,12 @@ let sortedAsc = false;
 function sortContactsBy(attribute) {
     let sortedContacts = [...contacts];
     let domSelector = ".sort-" + attribute.toLowerCase() + "-btn";
-    console.log(domSelector);
     let sortBtn = document.querySelector(domSelector);
-    console.log("before ", "isSorted: ", isSorted, " asc: ", sortedAsc);
     if (!isSorted) {
         isSorted = !isSorted;
         if (!sortedAsc) {
             sortedAsc = !sortedAsc;
             sortedContacts.sort((a, b) => a[attribute] > b[attribute] ? 1 : a[attribute] < b[attribute] ? -1 : 0);
-            console.log("1st time: ", "isSorted: ", isSorted, " asc: ", sortedAsc);
             appendToContactsTable(sortedContacts);
             sortBtn.innerHTML = "&#8593;";
             return;
@@ -87,14 +86,12 @@ function sortContactsBy(attribute) {
         if (sortedAsc) {
             sortedAsc = !sortedAsc;
             sortedContacts.sort((a, b) => a[attribute] > b[attribute] ? -1 : a[attribute] < b[attribute] ? 1 : 0);
-            console.log("2nd time: ", "isSorted: ", isSorted, " asc: ", sortedAsc);
             appendToContactsTable(sortedContacts);
             sortBtn.innerHTML = "&#8595;";
             return;
         }
         if (!sortedAsc) {
             isSorted = !isSorted;
-            console.log("3rd time: ", "isSorted: ", isSorted, " asc: ", sortedAsc);
             appendToContactsTable(contacts);
             sortBtn.innerHTML = "&#8645;";
             return;
