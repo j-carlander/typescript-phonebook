@@ -1,23 +1,36 @@
 "use strict";
 const addContactForm = document.querySelector(".add-contact-form");
-const contactField = document.querySelector(".contact-field");
-const contactsList = document.querySelector(".contacts-list");
+const contactsTableBody = document.querySelector(".contacts-table-body");
 const contacts = [];
-function createListItem(item) {
-    let li = document.createElement("li");
-    li.innerText = item;
-    return li;
+function createTableRow(contact) {
+    let tr = document.createElement("tr");
+    tr.innerHTML = `<td>${contact.lName}</td><td>${contact.fName}</td><td> ${contact.phone}</td>`;
+    return tr;
 }
 function appendToContactsList(contacts) {
-    contactsList.innerHTML = "";
-    contacts.forEach((contact) => contactsList.append(createListItem(contact)));
+    contactsTableBody.innerHTML = "";
+    contacts.forEach((contact) => contactsTableBody.append(createTableRow(contact)));
+}
+function getFormFieldValue(ref) {
+    if (ref === "#phone-field") {
+        let field = document.querySelector(ref);
+        let value = Number(field.value);
+        return value;
+    }
+    let field = document.querySelector(ref);
+    let value = field.value;
+    return value;
 }
 // if the contacts list is not empty on first run, append the contacts to the Contacts list in DOM
 if (contacts.length > 0)
     appendToContactsList(contacts);
 addContactForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    contacts.push(contactField.value);
+    let newContact = {
+        fName: getFormFieldValue("#fName-field"),
+        lName: getFormFieldValue("#lName-field"),
+        phone: getFormFieldValue("#phone-field"),
+    };
+    contacts.push(newContact);
     appendToContactsList(contacts);
-    contactField.value = "";
 });

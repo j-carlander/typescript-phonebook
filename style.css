@@ -1,10 +1,11 @@
-.contacts-list {
+.contacts-table {
 }
 
 .add-contact-form {
 }
 
 .contact-field {
+  display: block;
 }
 
 .add-contact-btn {

@@ -9,9 +9,36 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <ul class="contacts-list"></ul>
+    <h1>Phonebook</h1>
+    <table class="contacts-table">
+      <thead>
+        <tr>
+          <th>Last name</th>
+          <th>First name</th>
+          <th>Phone number</th>
+        </tr>
+      </thead>
+      <tbody class="contacts-table-body"></tbody>
+    </table>
     <form class="add-contact-form">
-      <input type="text" class="contact-field" />
+      <input
+        type="text"
+        class="contact-field"
+        name="fName"
+        id="fName-field"
+        placeholder="First name" />
+      <input
+        type="text"
+        class="contact-field"
+        name="lName"
+        id="lName-field"
+        placeholder="Last name" />
+      <input
+        type="number"
+        class="contact-field"
+        name="phone"
+        id="phone-field"
+        placeholder="Phone number" />
       <button class="add-contact-btn">Add Contact!</button>
     </form>
   </body>
