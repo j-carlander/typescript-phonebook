@@ -26,7 +26,7 @@ thead .contacts-table-row {
 }
 td,
 th {
-  min-width: 20ch;
+  width: 20ch;
 }
 .add-contact-form {
   display: flex;
@@ -35,4 +35,17 @@ th {
   margin: 1em auto;
   padding-top: 1em;
   border-top: 1px solid #aaa;
+}
+
+footer {
+  text-align: center;
+  font-size: small;
+}
+
+footer p:first-child {
+  margin-bottom: 0.3em;
+}
+
+footer p:last-child {
+  margin-top: 0;
 }
