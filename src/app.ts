@@ -6,16 +6,21 @@ const contactsTableBody: HTMLTableSectionElement = document.querySelector(
   ".contacts-table-body"
 ) as HTMLTableSectionElement;
 
+const sortLNameBtn: HTMLButtonElement = document.querySelector(
+  ".sort-lname-btn"
+) as HTMLButtonElement;
+const sortFNameBtn: HTMLButtonElement = document.querySelector(
+  ".sort-fname-btn"
+) as HTMLButtonElement;
+const sortPhoneBtn: HTMLButtonElement = document.querySelector(
+  ".sort-phone-btn"
+) as HTMLButtonElement;
+
 const contacts: Contact[] = [
   {
     fName: "Herr",
     lName: "Gurka",
     phone: 125697752,
-  },
-  {
-    fName: "Bror",
-    lName: "Gurka",
-    phone: 5143843770,
   },
   {
     fName: "Opsis",
@@ -28,6 +33,11 @@ const contacts: Contact[] = [
     phone: 13846846,
   },
   {
+    fName: "Bror",
+    lName: "Gurka",
+    phone: 5143843770,
+  },
+  {
     fName: "Kusin",
     lName: "Vitamin",
     phone: 984984677,
@@ -36,7 +46,8 @@ const contacts: Contact[] = [
 
 function createTableRow(contact: Contact): HTMLTableRowElement {
   let tr: HTMLTableRowElement = document.createElement("tr");
-  tr.innerHTML = `<td>${contact.lName}</td><td>${contact.fName}</td><td> ${contact.phone}</td>`;
+  tr.classList.add("contacts-table-row");
+  tr.innerHTML = `<td>${contact.fName}</td><td>${contact.lName}</td><td> ${contact.phone}</td>`;
   return tr;
 }
 
@@ -75,3 +86,53 @@ addContactForm.addEventListener("submit", (e): void => {
   contacts.push(newContact);
   appendToContactsTable(contacts);
 });
+
+let isSorted: true | false = false;
+let sortedAsc: true | false = false;
+
+function sortContactsBy(attribute: "lName" | "fName" | "phone"): void {
+  let sortedContacts: Contact[] = [...contacts];
+  let domSelector: string = ".sort-" + attribute.toLowerCase() + "-btn";
+  console.log(domSelector);
+  let sortBtn: HTMLButtonElement = document.querySelector(
+    domSelector
+  ) as HTMLButtonElement;
+
+  console.log("before ", "isSorted: ", isSorted, " asc: ", sortedAsc);
+  if (!isSorted) {
+    isSorted = !isSorted;
+    if (!sortedAsc) {
+      sortedAsc = !sortedAsc;
+      sortedContacts.sort((a, b) =>
+        a[attribute] > b[attribute] ? 1 : a[attribute] < b[attribute] ? -1 : 0
+      );
+      console.log("1st time: ", "isSorted: ", isSorted, " asc: ", sortedAsc);
+      appendToContactsTable(sortedContacts);
+      sortBtn.innerHTML = "&#8593;";
+      return;
+    }
+  }
+  if (isSorted) {
+    if (sortedAsc) {
+      sortedAsc = !sortedAsc;
+      sortedContacts.sort((a, b) =>
+        a[attribute] > b[attribute] ? -1 : a[attribute] < b[attribute] ? 1 : 0
+      );
+      console.log("2nd time: ", "isSorted: ", isSorted, " asc: ", sortedAsc);
+      appendToContactsTable(sortedContacts);
+      sortBtn.innerHTML = "&#8595;";
+      return;
+    }
+    if (!sortedAsc) {
+      isSorted = !isSorted;
+      console.log("3rd time: ", "isSorted: ", isSorted, " asc: ", sortedAsc);
+      appendToContactsTable(contacts);
+      sortBtn.innerHTML = "&#8645;";
+      return;
+    }
+  }
+}
+
+sortLNameBtn.addEventListener("click", (): void => sortContactsBy("lName"));
+sortFNameBtn.addEventListener("click", (): void => sortContactsBy("fName"));
+sortPhoneBtn.addEventListener("click", (): void => sortContactsBy("phone"));

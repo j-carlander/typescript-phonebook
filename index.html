@@ -9,13 +9,22 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Phonebook</h1>
+    <h1 class="hero-title">Phonebook</h1>
     <table class="contacts-table">
       <thead>
-        <tr>
-          <th>Last name</th>
-          <th>First name</th>
-          <th>Phone number</th>
+        <tr class="contacts-table-row">
+          <th>
+            First name
+            <button class="sort-fname-btn">&#8645;</button>
+          </th>
+          <th>
+            Last name
+            <button class="sort-lname-btn">&#8645;</button>
+          </th>
+          <th>
+            Phone number
+            <button class="sort-phone-btn">&#8645;</button>
+          </th>
         </tr>
       </thead>
       <tbody class="contacts-table-body"></tbody>

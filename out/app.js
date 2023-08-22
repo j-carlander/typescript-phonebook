@@ -1,16 +1,14 @@
 "use strict";
 const addContactForm = document.querySelector(".add-contact-form");
 const contactsTableBody = document.querySelector(".contacts-table-body");
+const sortLNameBtn = document.querySelector(".sort-lname-btn");
+const sortFNameBtn = document.querySelector(".sort-fname-btn");
+const sortPhoneBtn = document.querySelector(".sort-phone-btn");
 const contacts = [
     {
         fName: "Herr",
         lName: "Gurka",
         phone: 125697752,
-    },
-    {
-        fName: "Bror",
-        lName: "Gurka",
-        phone: 5143843770,
     },
     {
         fName: "Opsis",
@@ -23,6 +21,11 @@ const contacts = [
         phone: 13846846,
     },
     {
+        fName: "Bror",
+        lName: "Gurka",
+        phone: 5143843770,
+    },
+    {
         fName: "Kusin",
         lName: "Vitamin",
         phone: 984984677,
@@ -30,7 +33,8 @@ const contacts = [
 ];
 function createTableRow(contact) {
     let tr = document.createElement("tr");
-    tr.innerHTML = `<td>${contact.lName}</td><td>${contact.fName}</td><td> ${contact.phone}</td>`;
+    tr.classList.add("contacts-table-row");
+    tr.innerHTML = `<td>${contact.fName}</td><td>${contact.lName}</td><td> ${contact.phone}</td>`;
     return tr;
 }
 function appendToContactsTable(contacts) {
@@ -60,3 +64,43 @@ addContactForm.addEventListener("submit", (e) => {
     contacts.push(newContact);
     appendToContactsTable(contacts);
 });
+let isSorted = false;
+let sortedAsc = false;
+function sortContactsBy(attribute) {
+    let sortedContacts = [...contacts];
+    let domSelector = ".sort-" + attribute.toLowerCase() + "-btn";
+    console.log(domSelector);
+    let sortBtn = document.querySelector(domSelector);
+    console.log("before ", "isSorted: ", isSorted, " asc: ", sortedAsc);
+    if (!isSorted) {
+        isSorted = !isSorted;
+        if (!sortedAsc) {
+            sortedAsc = !sortedAsc;
+            sortedContacts.sort((a, b) => a[attribute] > b[attribute] ? 1 : a[attribute] < b[attribute] ? -1 : 0);
+            console.log("1st time: ", "isSorted: ", isSorted, " asc: ", sortedAsc);
+            appendToContactsTable(sortedContacts);
+            sortBtn.innerHTML = "&#8593;";
+            return;
+        }
+    }
+    if (isSorted) {
+        if (sortedAsc) {
+            sortedAsc = !sortedAsc;
+            sortedContacts.sort((a, b) => a[attribute] > b[attribute] ? -1 : a[attribute] < b[attribute] ? 1 : 0);
+            console.log("2nd time: ", "isSorted: ", isSorted, " asc: ", sortedAsc);
+            appendToContactsTable(sortedContacts);
+            sortBtn.innerHTML = "&#8595;";
+            return;
+        }
+        if (!sortedAsc) {
+            isSorted = !isSorted;
+            console.log("3rd time: ", "isSorted: ", isSorted, " asc: ", sortedAsc);
+            appendToContactsTable(contacts);
+            sortBtn.innerHTML = "&#8645;";
+            return;
+        }
+    }
+}
+sortLNameBtn.addEventListener("click", () => sortContactsBy("lName"));
+sortFNameBtn.addEventListener("click", () => sortContactsBy("fName"));
+sortPhoneBtn.addEventListener("click", () => sortContactsBy("phone"));
