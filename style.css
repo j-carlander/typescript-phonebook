@@ -29,7 +29,9 @@ th {
   width: 20ch;
 }
 
-td:last-of-type {
+td:nth-of-type(n + 4),
+th:nth-of-type(n + 4) {
+  width: 7ch;
   text-align: center;
 }
 .add-contact-form {
@@ -40,6 +42,10 @@ td:last-of-type {
   margin: 1em auto;
   padding-top: 1em;
   border-top: 1px solid #aaa;
+}
+
+.contact-field {
+  width: 30ch;
 }
 .add-contact-btn {
   margin-left: 2em;

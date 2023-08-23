@@ -6,6 +6,9 @@
     <title>TS - Phonebook</title>
 
     <script src="out\app.js" defer="defer"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -25,6 +28,7 @@
             Phone number
             <button class="sort-phone-btn">&#8645;</button>
           </th>
+          <th>Hide Number</th>
           <th>Delete</th>
         </tr>
       </thead>
@@ -50,7 +54,7 @@
         id="phone-field"
         placeholder="Phone number" />
       <div>
-        <label for="classified">Hide</label>
+        <label for="classified">Hide Number</label>
         <input type="checkbox" name="classified" id="classified" />
         <button class="add-contact-btn">Add Contact!</button>
       </div>

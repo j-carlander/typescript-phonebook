@@ -16,10 +16,6 @@ const sortPhoneBtn: HTMLButtonElement = document.querySelector(
   ".sort-phone-btn"
 ) as HTMLButtonElement;
 
-const deleteContactBtns: NodeListOf<Element> = document.querySelectorAll(
-  ".delete-contact-btn"
-);
-
 const contacts: Contact[] = [
   {
     id: 1000,
@@ -58,6 +54,14 @@ const contacts: Contact[] = [
   },
 ];
 
+function hideContactNumber(id: number): void {
+  let index: number = contacts.findIndex(
+    (contact: Contact) => contact.id === id
+  );
+  contacts[index].classified = !contacts[index].classified;
+  appendToContactsTable(contacts);
+}
+
 function deleteContact(id: number): void {
   let index: number = contacts.findIndex(
     (contact: Contact) => contact.id === id
@@ -69,8 +73,15 @@ function deleteContact(id: number): void {
 function createTableRow(contact: Contact): HTMLTableRowElement {
   let tr: HTMLTableRowElement = document.createElement("tr");
   let phone: string | number = !contact.classified ? contact.phone : "*******";
+  let lockSymbol: string = contact.classified ? "&#xf023;" : "&#xf09c;";
   tr.classList.add("contacts-table-row");
-  tr.innerHTML = `<td>${contact.fName}</td><td>${contact.lName}</td><td>${phone}</td><td><button data-id="${contact.id}" class="delete-contact-btn">&#128465;</button></td>`;
+  tr.innerHTML = `
+    <td>${contact.fName}</td>
+    <td>${contact.lName}</td>
+    <td>${phone}</td>
+    <td><button data-id="${contact.id}" class="hide-contact-btn fa">${lockSymbol}</button></td>
+    <td><button data-id="${contact.id}" class="delete-contact-btn">&#128465;</button></td>
+    `;
   return tr;
 }
 
@@ -78,6 +89,12 @@ function appendToContactsTable(contacts: Contact[]): void {
   contactsTableBody.innerHTML = "";
   contacts.forEach((contact: Contact): void =>
     contactsTableBody.append(createTableRow(contact))
+  );
+  document.querySelectorAll(".hide-contact-btn")?.forEach((btn): void =>
+    btn.addEventListener("click", (e): void => {
+      let target = e.target as HTMLElement;
+      hideContactNumber(Number(target.dataset.id));
+    })
   );
   document.querySelectorAll(".delete-contact-btn")?.forEach((btn): void =>
     btn.addEventListener("click", (e): void => {

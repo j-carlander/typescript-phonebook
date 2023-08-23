@@ -4,7 +4,6 @@ const contactsTableBody = document.querySelector(".contacts-table-body");
 const sortLNameBtn = document.querySelector(".sort-lname-btn");
 const sortFNameBtn = document.querySelector(".sort-fname-btn");
 const sortPhoneBtn = document.querySelector(".sort-phone-btn");
-const deleteContactBtns = document.querySelectorAll(".delete-contact-btn");
 const contacts = [
     {
         id: 1000,
@@ -42,6 +41,11 @@ const contacts = [
         classified: true,
     },
 ];
+function hideContactNumber(id) {
+    let index = contacts.findIndex((contact) => contact.id === id);
+    contacts[index].classified = !contacts[index].classified;
+    appendToContactsTable(contacts);
+}
 function deleteContact(id) {
     let index = contacts.findIndex((contact) => contact.id === id);
     contacts.splice(index, 1);
@@ -50,15 +54,26 @@ function deleteContact(id) {
 function createTableRow(contact) {
     let tr = document.createElement("tr");
     let phone = !contact.classified ? contact.phone : "*******";
+    let lockSymbol = contact.classified ? "&#xf023;" : "&#xf09c;";
     tr.classList.add("contacts-table-row");
-    tr.innerHTML = `<td>${contact.fName}</td><td>${contact.lName}</td><td>${phone}</td><td><button data-id="${contact.id}" class="delete-contact-btn">&#128465;</button></td>`;
+    tr.innerHTML = `
+    <td>${contact.fName}</td>
+    <td>${contact.lName}</td>
+    <td>${phone}</td>
+    <td><button data-id="${contact.id}" class="hide-contact-btn fa">${lockSymbol}</button></td>
+    <td><button data-id="${contact.id}" class="delete-contact-btn">&#128465;</button></td>
+    `;
     return tr;
 }
 function appendToContactsTable(contacts) {
-    var _a;
+    var _a, _b;
     contactsTableBody.innerHTML = "";
     contacts.forEach((contact) => contactsTableBody.append(createTableRow(contact)));
-    (_a = document.querySelectorAll(".delete-contact-btn")) === null || _a === void 0 ? void 0 : _a.forEach((btn) => btn.addEventListener("click", (e) => {
+    (_a = document.querySelectorAll(".hide-contact-btn")) === null || _a === void 0 ? void 0 : _a.forEach((btn) => btn.addEventListener("click", (e) => {
+        let target = e.target;
+        hideContactNumber(Number(target.dataset.id));
+    }));
+    (_b = document.querySelectorAll(".delete-contact-btn")) === null || _b === void 0 ? void 0 : _b.forEach((btn) => btn.addEventListener("click", (e) => {
         let target = e.target;
         deleteContact(Number(target.dataset.id));
     }));
