@@ -12,6 +12,14 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <dialog id="adminCheck" data-contactId="" data-action="">
+      <p>You need to be admin for the requested action</p>
+      <form id="confirm-dialog-form">
+        <input type="password" placeholder="Password" />
+        <button formmethod="dialog">Cancel</button>
+        <button id="confirm-dialog-btn" type="submit">Confirm</button>
+      </form>
+    </dialog>
     <h1 class="hero-title">Phonebook</h1>
     <table class="contacts-table">
       <thead>

@@ -1,9 +1,18 @@
 "use strict";
+/** Document Query selections */
+// add a new contact form
 const addContactForm = document.querySelector(".add-contact-form");
+// The table for rendering contacts
 const contactsTableBody = document.querySelector(".contacts-table-body");
+// Sorting buttons
 const sortLNameBtn = document.querySelector(".sort-lname-btn");
 const sortFNameBtn = document.querySelector(".sort-fname-btn");
 const sortPhoneBtn = document.querySelector(".sort-phone-btn");
+// Dialog and form for checking if admin
+const adminCheckDialog = document.querySelector("#adminCheck");
+const adminCheckInput = adminCheckDialog.querySelector("input");
+const adminCheckConfirmForm = adminCheckDialog.querySelector("#confirm-dialog-form");
+/** Initiating the contacts list with a set of contacts */
 const contacts = [
     {
         id: 1000,
@@ -41,6 +50,25 @@ const contacts = [
         classified: true,
     },
 ];
+/** Functions */
+adminCheckDialog.addEventListener("close", () => {
+    if (checkIfAdmin(adminCheckDialog.returnValue)) {
+        if (adminCheckDialog.dataset.action === "hide")
+            hideContactNumber(Number(adminCheckDialog.dataset.contactId));
+        if (adminCheckDialog.dataset.action === "delete")
+            deleteContact(Number(adminCheckDialog.dataset.contactId));
+    }
+    adminCheckInput.value = "";
+});
+adminCheckConfirmForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    adminCheckDialog.close(adminCheckInput.value);
+});
+function checkIfAdmin(password) {
+    if (password === "admin")
+        return true;
+    return false;
+}
 function hideContactNumber(id) {
     let index = contacts.findIndex((contact) => contact.id === id);
     contacts[index].classified = !contacts[index].classified;
@@ -51,6 +79,7 @@ function deleteContact(id) {
     contacts.splice(index, 1);
     appendToContactsTable(contacts);
 }
+// Creating the table row to be appended to the table
 function createTableRow(contact) {
     let tr = document.createElement("tr");
     let phone = !contact.classified ? contact.phone : "*******";
@@ -65,19 +94,25 @@ function createTableRow(contact) {
     `;
     return tr;
 }
+// Appending each contact in contacts to the table and adding the eventlisteners for the buttons for hiding and deleting contacts
 function appendToContactsTable(contacts) {
     var _a, _b;
     contactsTableBody.innerHTML = "";
     contacts.forEach((contact) => contactsTableBody.append(createTableRow(contact)));
     (_a = document.querySelectorAll(".hide-contact-btn")) === null || _a === void 0 ? void 0 : _a.forEach((btn) => btn.addEventListener("click", (e) => {
         let target = e.target;
-        hideContactNumber(Number(target.dataset.id));
+        adminCheckDialog.dataset.contactId = target.dataset.id;
+        adminCheckDialog.dataset.action = "hide";
+        adminCheckDialog.showModal();
     }));
     (_b = document.querySelectorAll(".delete-contact-btn")) === null || _b === void 0 ? void 0 : _b.forEach((btn) => btn.addEventListener("click", (e) => {
         let target = e.target;
-        deleteContact(Number(target.dataset.id));
+        adminCheckDialog.dataset.contactId = target.dataset.id;
+        adminCheckDialog.dataset.action = "delete";
+        adminCheckDialog.showModal();
     }));
 }
+// get the value from a input field by referense
 function getFormFieldValue(ref) {
     if (ref === "#phone-field") {
         let field = document.querySelector(ref);
@@ -96,9 +131,7 @@ function getFormFieldValue(ref) {
     field.value = "";
     return value;
 }
-// if the contacts list is not empty on first run, append the contacts to the Contacts list in DOM
-if (contacts.length > 0)
-    appendToContactsTable(contacts);
+// The event listener for adding a new contact
 addContactForm.addEventListener("submit", (e) => {
     e.preventDefault();
     let newContact = {
@@ -111,8 +144,11 @@ addContactForm.addEventListener("submit", (e) => {
     contacts.push(newContact);
     appendToContactsTable(contacts);
 });
+/** Sorting the contacts list by either name or number both asc and desc */
+// needed variables for sorting
 let isSorted = false;
 let sortedAsc = false;
+// the sorting function able to take in what attribute to sort by
 function sortContactsBy(attribute) {
     let sortedContacts = [...contacts];
     let domSelector = ".sort-" + attribute.toLowerCase() + "-btn";
@@ -143,6 +179,10 @@ function sortContactsBy(attribute) {
         }
     }
 }
+// adding the sorting function to the eventlisteners for the sorting buttons
 sortLNameBtn.addEventListener("click", () => sortContactsBy("lName"));
 sortFNameBtn.addEventListener("click", () => sortContactsBy("fName"));
 sortPhoneBtn.addEventListener("click", () => sortContactsBy("phone"));
+/** if the contacts list is not empty on first run, append the contacts to the Contacts list in DOM */
+if (contacts.length > 0)
+    appendToContactsTable(contacts);
