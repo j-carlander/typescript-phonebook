@@ -9,32 +9,38 @@ const contacts = [
         fName: "Herr",
         lName: "Gurka",
         phone: 125697752,
+        classified: false,
     },
     {
         fName: "Opsis",
         lName: "Kalopsis",
         phone: 1531438,
+        classified: true,
     },
     {
         fName: "Krakel",
         lName: "Spektakel",
         phone: 13846846,
+        classified: false,
     },
     {
         fName: "Bror",
         lName: "Gurka",
         phone: 5143843770,
+        classified: false,
     },
     {
         fName: "Kusin",
         lName: "Vitamin",
         phone: 984984677,
+        classified: true,
     },
 ];
 function createTableRow(contact) {
     let tr = document.createElement("tr");
+    let phone = !contact.classified ? contact.phone : "*******";
     tr.classList.add("contacts-table-row");
-    tr.innerHTML = `<td>${contact.fName}</td><td>${contact.lName}</td><td> ${contact.phone}</td>`;
+    tr.innerHTML = `<td>${contact.fName}</td><td>${contact.lName}</td><td> ${phone}</td>`;
     return tr;
 }
 function appendToContactsTable(contacts) {
@@ -47,6 +53,12 @@ function getFormFieldValue(ref) {
         let value = Number(field.value);
         field.value = "";
         return value;
+    }
+    if (ref === "#classified") {
+        let field = document.querySelector("#classified");
+        let checked = field.checked;
+        field.checked = false;
+        return checked;
     }
     let field = document.querySelector(ref);
     let value = field.value;
@@ -62,6 +74,7 @@ addContactForm.addEventListener("submit", (e) => {
         fName: getFormFieldValue("#fName-field"),
         lName: getFormFieldValue("#lName-field"),
         phone: getFormFieldValue("#phone-field"),
+        classified: getFormFieldValue("#classified"),
     };
     contacts.push(newContact);
     appendToContactsTable(contacts);

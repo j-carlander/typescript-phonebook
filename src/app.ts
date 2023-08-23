@@ -21,33 +21,39 @@ const contacts: Contact[] = [
     fName: "Herr",
     lName: "Gurka",
     phone: 125697752,
+    classified: false,
   },
   {
     fName: "Opsis",
     lName: "Kalopsis",
     phone: 1531438,
+    classified: true,
   },
   {
     fName: "Krakel",
     lName: "Spektakel",
     phone: 13846846,
+    classified: false,
   },
   {
     fName: "Bror",
     lName: "Gurka",
     phone: 5143843770,
+    classified: false,
   },
   {
     fName: "Kusin",
     lName: "Vitamin",
     phone: 984984677,
+    classified: true,
   },
 ];
 
 function createTableRow(contact: Contact): HTMLTableRowElement {
   let tr: HTMLTableRowElement = document.createElement("tr");
+  let phone: string | number = !contact.classified ? contact.phone : "*******";
   tr.classList.add("contacts-table-row");
-  tr.innerHTML = `<td>${contact.fName}</td><td>${contact.lName}</td><td> ${contact.phone}</td>`;
+  tr.innerHTML = `<td>${contact.fName}</td><td>${contact.lName}</td><td> ${phone}</td>`;
   return tr;
 }
 
@@ -59,8 +65,8 @@ function appendToContactsTable(contacts: Contact[]): void {
 }
 
 function getFormFieldValue(
-  ref: "#fName-field" | "#lName-field" | "#phone-field"
-): string | number {
+  ref: "#fName-field" | "#lName-field" | "#phone-field" | "#classified"
+): string | number | boolean {
   if (ref === "#phone-field") {
     let field: HTMLInputElement = document.querySelector(
       ref
@@ -69,8 +75,18 @@ function getFormFieldValue(
     field.value = "";
     return value;
   }
+  if (ref === "#classified") {
+    let field: HTMLInputElement = document.querySelector(
+      "#classified"
+    ) as HTMLInputElement;
+    let checked: boolean = field.checked;
+    field.checked = false;
+    return checked;
+  }
+
   let field: HTMLInputElement = document.querySelector(ref) as HTMLInputElement;
   let value: string = field.value;
+
   field.value = "";
   return value;
 }
@@ -80,10 +96,12 @@ if (contacts.length > 0) appendToContactsTable(contacts);
 
 addContactForm.addEventListener("submit", (e): void => {
   e.preventDefault();
+
   let newContact: Contact = {
     fName: getFormFieldValue("#fName-field") as string,
     lName: getFormFieldValue("#lName-field") as string,
     phone: getFormFieldValue("#phone-field") as number,
+    classified: getFormFieldValue("#classified") as boolean,
   };
   contacts.push(newContact);
   appendToContactsTable(contacts);
