@@ -4,48 +4,64 @@ const contactsTableBody = document.querySelector(".contacts-table-body");
 const sortLNameBtn = document.querySelector(".sort-lname-btn");
 const sortFNameBtn = document.querySelector(".sort-fname-btn");
 const sortPhoneBtn = document.querySelector(".sort-phone-btn");
+const deleteContactBtns = document.querySelectorAll(".delete-contact-btn");
 const contacts = [
     {
+        id: 1000,
         fName: "Herr",
         lName: "Gurka",
         phone: 125697752,
         classified: false,
     },
     {
+        id: 1001,
         fName: "Opsis",
         lName: "Kalopsis",
         phone: 1531438,
         classified: true,
     },
     {
+        id: 1002,
         fName: "Krakel",
         lName: "Spektakel",
         phone: 13846846,
         classified: false,
     },
     {
+        id: 1003,
         fName: "Bror",
         lName: "Gurka",
         phone: 5143843770,
         classified: false,
     },
     {
+        id: 1004,
         fName: "Kusin",
         lName: "Vitamin",
         phone: 984984677,
         classified: true,
     },
 ];
+function deleteContact(id) {
+    let index = contacts.findIndex((contact) => contact.id === id);
+    contacts.splice(index, 1);
+    appendToContactsTable(contacts);
+}
 function createTableRow(contact) {
     let tr = document.createElement("tr");
     let phone = !contact.classified ? contact.phone : "*******";
     tr.classList.add("contacts-table-row");
-    tr.innerHTML = `<td>${contact.fName}</td><td>${contact.lName}</td><td> ${phone}</td>`;
+    tr.innerHTML = `<td>${contact.fName}</td><td>${contact.lName}</td><td>${phone}</td><td><button data-id="${contact.id}" class="delete-contact-btn">&#128465;</button></td>`;
     return tr;
 }
 function appendToContactsTable(contacts) {
+    var _a;
     contactsTableBody.innerHTML = "";
     contacts.forEach((contact) => contactsTableBody.append(createTableRow(contact)));
+    (_a = document.querySelectorAll(".delete-contact-btn")) === null || _a === void 0 ? void 0 : _a.forEach((btn) => btn.addEventListener("click", (e) => {
+        let target = e.target;
+        deleteContact(Number(target.dataset.id));
+    }));
 }
 function getFormFieldValue(ref) {
     if (ref === "#phone-field") {
@@ -71,6 +87,7 @@ if (contacts.length > 0)
 addContactForm.addEventListener("submit", (e) => {
     e.preventDefault();
     let newContact = {
+        id: 1000 + contacts.length,
         fName: getFormFieldValue("#fName-field"),
         lName: getFormFieldValue("#lName-field"),
         phone: getFormFieldValue("#phone-field"),

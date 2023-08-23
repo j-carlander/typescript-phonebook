@@ -28,6 +28,10 @@ td,
 th {
   width: 20ch;
 }
+
+td:last-of-type {
+  text-align: center;
+}
 .add-contact-form {
   display: flex;
   flex-direction: column;
